@@ -25,6 +25,93 @@ body{background:radial-gradient(circle at 15% 0%,#e9f4ff 0,#f6f9fc 34%,#eef4fa 1
 .metric,.panel{border:1px solid #d4e4f4;box-shadow:0 10px 30px rgba(25,78,130,.06);border-radius:18px}
 .btn{min-height:40px}
 .metric strong{letter-spacing:-.5px}
+
+/* SPL Premium Admin v2 */
+:root{
+  --red:#d4a72c;--ink:#e8eef8;--muted:#91a0b7;--bg:#07111f;--line:#203149;
+  --green:#35d07f;--amber:#f2bd4b;--danger:#ff6b7a;--panel:#0d1a2b;
+}
+body{
+  background:
+    radial-gradient(circle at 10% 0%,rgba(212,167,44,.13),transparent 28%),
+    radial-gradient(circle at 90% 10%,rgba(41,115,255,.15),transparent 32%),
+    linear-gradient(135deg,#050b14 0%,#081423 45%,#0b1627 100%);
+  color:var(--ink);
+}
+.sidebar{
+  background:linear-gradient(180deg,rgba(8,17,30,.98),rgba(10,23,39,.98));
+  border-right:1px solid #263951;
+  box-shadow:18px 0 45px rgba(0,0,0,.25);
+}
+.brandLogo{
+  background:linear-gradient(135deg,#f4d36a,#b47b12);
+  color:#101827;
+  box-shadow:0 8px 25px rgba(212,167,44,.25);
+}
+.brand b{color:#f6f8fc;letter-spacing:.7px}
+.navGroup{color:#667993}
+.sideNav button{color:#9aabc0}
+.sideNav button.active,.sideNav button:hover{
+  background:linear-gradient(90deg,rgba(212,167,44,.16),rgba(212,167,44,.05));
+  color:#f7d66e;
+  border-color:#6d5926!important;
+  box-shadow:inset 3px 0 #d4a72c,0 7px 20px rgba(0,0,0,.14);
+}
+.main{background:transparent}
+.top{
+  background:rgba(7,17,31,.78);
+  border-bottom:1px solid #203149;
+  box-shadow:0 10px 35px rgba(0,0,0,.16);
+}
+.content{max-width:1600px}
+.metric,.panel{
+  background:linear-gradient(145deg,rgba(15,29,48,.94),rgba(10,22,37,.94));
+  border:1px solid #263a55;
+  box-shadow:0 16px 40px rgba(0,0,0,.18);
+  color:#e8eef8;
+}
+.metric small,.hint,.muted{color:#8fa0b7}
+.field label,.tr.head{color:#9aabc0}
+.field input,.field select,.field textarea{
+  background:#091626!important;color:#e7eef8!important;border-color:#2a405d!important;
+}
+.field input::placeholder,.field textarea::placeholder{color:#64758c}
+.btn,.tabs button,.close,.mobileMenu{
+  border-color:#2a405d!important;
+  background:#101f32;
+  color:#dbe6f4;
+}
+.btn:hover,.tabs button:hover,.sideNav button:hover{
+  border-color:#b38a25!important;
+  box-shadow:0 9px 24px rgba(0,0,0,.25);
+}
+.btn.red{
+  background:linear-gradient(135deg,#e7c35a,#b9851d);
+  color:#151c28;
+  border-color:#d4a72c!important;
+  box-shadow:0 8px 24px rgba(212,167,44,.18);
+}
+.btn.light{background:#101f32;color:#dce7f4}
+.btn.danger{background:#32151d;color:#ff9aa6;border-color:#6b2834!important}
+.tr{border-bottom-color:#203149}
+.badge{background:#15243a;color:#b8c6d8}
+.green{color:var(--green)}.amber{color:var(--amber)}.dangerText{color:var(--danger)}
+.modal{background:rgba(0,0,0,.72)}
+.modalBox{background:#0c192a;border:1px solid #2b405b;color:#e8eef8;box-shadow:0 30px 90px rgba(0,0,0,.4)}
+.close{background:#16263a;color:#dce7f4}
+.loginCard{
+  background:linear-gradient(145deg,#0d1a2b,#091423);
+  border:1px solid #29415e;
+  color:#e8eef8;
+  box-shadow:0 25px 90px rgba(0,0,0,.38);
+}
+.logo{background:linear-gradient(135deg,#f4d36a,#b47b12);color:#101827}
+.tabs button.active{background:linear-gradient(135deg,#d4a72c,#a97613);color:#101827}
+@media(max-width:850px){
+  .sidebar{box-shadow:18px 0 55px rgba(0,0,0,.45)}
+  .top{background:rgba(7,17,31,.9)}
+}
+
 </style>
 </head>
 <body><div id="root"></div>
@@ -62,7 +149,7 @@ function userRows(a){return`<div class="table"><div class="tr head"><div>User / 
 function collectDeposits(){const out=[];for(const [phone,u] of Object.entries(state.data.users||{})){for(const [id,d] of Object.entries(u.deposits||{})){out.push({...d,id,phone,userName:u.name||'',balance:u.balance||0})}}return out.sort((a,b)=>Number(b.createdAt||0)-Number(a.createdAt||0))}
 function isSuccess(s){return ['success','successful','সফল','approved','paid','1'].includes(String(s||'').toLowerCase())}function isFailed(s){return ['failed','rejected','বাতিল','2','expired'].includes(String(s||'').toLowerCase())}function isProcessed(s){return ['approved','rejected','সফল','সম্পন্ন','paid','completed','অনুমোদিত','বাতিল','টাকা পাঠানো হয়েছে'].includes(String(s||'').toLowerCase())}
 function depositsPage(){const a=collectDeposits();return`<div class="title"><div><h1>Deposits / WPAY Orders</h1><span class="muted">users/{phone}/deposits — User Panel-এর প্রকৃত ডেটা</span></div><div class="toolbar"><button class="btn red" onclick="manualDepositModal()">+ MANUAL DEPOSIT</button><button class="btn light" onclick="refresh()">Refresh</button></div></div><div class="panel"><div class="toolbar"><input id="depSearch" class="search" placeholder="Phone / Order ID / Trx ID খুঁজুন" oninput="filterRows('depSearch','.depRow')"><select id="depStatus" onchange="filterRows('depSearch','.depRow')"><option value="">সব Status</option><option>অপেক্ষমাণ</option><option>success</option><option>সফল</option><option>failed</option></select></div><div class="table"><div class="tr head"><div>User / Order</div><div>Amount / Method</div><div>Transaction ID</div><div>Status / Date</div><div>Action</div></div>${a.map(d=>`<div class="tr depRow" data-search="${esc((d.phone+' '+d.id+' '+(d.out_trade_no||'')+' '+(d.trxId||'')+' '+(d.transactionId||'')).toLowerCase())}" data-status="${esc(d.status||'')}"><div><b>${esc(d.userName)}</b><br>${esc(d.phone)}<br><span class="muted">${esc(d.out_trade_no||d.id)}</span></div><div><b>${money(d.amount)}</b><br>${esc(d.method||'WPAY')}</div><div>${esc(d.providerTransactionId||d.trxId||d.transactionId||'—')}</div><div><span class="badge ${isSuccess(d.status)?'green':isFailed(d.status)?'dangerText':'amber'}">${esc(d.status||'অপেক্ষমাণ')}</span><br><span class="muted">${fmt(d.createdAt)}</span></div><div><button class="btn light" onclick="depositDetails('${esc(d.phone)}','${esc(d.id)}')">DETAILS</button> ${(!isSuccess(d.status)&&!isFailed(d.status))?`<button class="btn light" onclick="reviewDeposit('${esc(d.phone)}','${esc(d.id)}','approved')">APPROVE</button> <button class="btn danger" onclick="reviewDeposit('${esc(d.phone)}','${esc(d.id)}','rejected')">REJECT</button>`:''}</div></div>`).join('')||'<div class="empty">এখনো কোনো ডিপোজিট নেই</div>'}</div></div><p class="hint">নোট: WPAY অর্ডার সফল হলে Backend callback users/{phone}/deposits/{orderId} আপডেট করবে। Pending রেকর্ড ম্যানুয়ালি যাচাই করে APPROVE/REJECT করা যায়। WPAY-এর callback-এ verified status এলে সেটি স্বয়ংক্রিয়ভাবে আপডেট হবে।</p>`}
-function withdrawalsPage(){const a=Object.entries(state.data.withdrawal_requests||{}).sort((x,y)=>Number(y[1].createdAt||0)-Number(x[1].createdAt||0));return`<div class="title"><div><h1>Withdrawal Requests</h1><span class="muted">WPAY-এর সঙ্গে উত্তোলনের কোনো সংযোগ নেই। ইউজারকে বাইরে থেকে টাকা পাঠানোর পরেই Approve করুন।</span></div></div><div class="panel"><div class="toolbar"><input id="wdSearch" class="search" placeholder="Phone / name খুঁজুন" oninput="filterRows('wdSearch','.wdRow')"></div><div class="table"><div class="tr head"><div>User / Account</div><div>Amount</div><div>Fee / Net</div><div>Status / Date</div><div>Action</div></div>${a.map(([id,w])=>`<div class="tr wdRow" data-search="${esc((w.userPhone+' '+w.userName+' '+w.accountNumber).toLowerCase())}"><div><b>${esc(w.userName||'User')}</b><br>${esc(w.userPhone||'—')}<br><span class="muted">${esc(w.method||'')} · ${esc(w.accountNumber||'')}</span></div><div>${money(w.amount)}</div><div>${money(w.fee)} / ${money(w.netAmount)}</div><div><span class="badge ${isProcessed(w.status)?'green':'amber'}">${esc(w.status||'পেন্ডিং')}</span><br><span class="muted">${fmt(w.createdAt)}</span></div><div>${isProcessed(w.status)?'—':`<button class="btn red" onclick="reviewWithdrawal('${esc(id)}','approved')">টাকা পাঠিয়েছি — APPROVE</button> <button class="btn danger" onclick="reviewWithdrawal('${esc(id)}','rejected')">REJECT</button>`}</div></div>`).join('')||'<div class="empty">কোনো withdrawal request নেই</div>'}</div></div>`}
+function withdrawalsPage(){const a=Object.entries(state.data.withdrawal_requests||{}).sort((x,y)=>Number(y[1].createdAt||0)-Number(x[1].createdAt||0));return`<div class="title"><div><h1>Withdrawal Requests</h1><span class="muted">Admin completion mode: এই বোতাম কোনো bKash/Nagad/Rocket payout পাঠায় না এবং wallet balance কাটে না। এটি শুধু request-কে admin-completed হিসেবে চিহ্নিত করে।</span></div></div><div class="panel"><div class="toolbar"><input id="wdSearch" class="search" placeholder="Phone / name খুঁজুন" oninput="filterRows('wdSearch','.wdRow')"></div><div class="table"><div class="tr head"><div>User / Account</div><div>Amount</div><div>Fee / Net</div><div>Status / Date</div><div>Action</div></div>${a.map(([id,w])=>`<div class="tr wdRow" data-search="${esc((w.userPhone+' '+w.userName+' '+w.accountNumber).toLowerCase())}"><div><b>${esc(w.userName||'User')}</b><br>${esc(w.userPhone||'—')}<br><span class="muted">${esc(w.method||'')} · ${esc(w.accountNumber||'')}</span></div><div>${money(w.amount)}</div><div>${money(w.fee)} / ${money(w.netAmount)}</div><div><span class="badge ${isProcessed(w.status)?'green':'amber'}">${esc(w.status||'পেন্ডিং')}</span><br><span class="muted">${fmt(w.createdAt)}</span></div><div>${isProcessed(w.status)?'—':`<button class="btn red" onclick="reviewWithdrawal('${esc(id)}','approved')">COMPLETE — NO PAYOUT</button> <button class="btn danger" onclick="reviewWithdrawal('${esc(id)}','rejected')">REJECT</button>`}</div></div>`).join('')||'<div class="empty">কোনো withdrawal request নেই</div>'}</div></div>`}
 function packagesPage(){const a=Object.entries(state.data.packages||{});return`<div class="title"><div><h1>Packages</h1><span class="muted">User Panel packages root path</span></div><button class="btn red" onclick="packageModal()">+ ADD PACKAGE</button></div><div class="panel"><div class="table"><div class="tr head"><div>Package</div><div>Cost / Daily</div><div>Duration</div><div>Limit / Status</div><div>Action</div></div>${a.map(([id,p])=>`<div class="tr"><div><b>${esc(p.name||id)}</b><br><span class="muted">${esc(id)}</span></div><div>${money(p.cost)} / ${money(p.daily)}</div><div>${esc(p.duration||0)} days</div><div>${esc(p.limit??'—')} / ${esc(p.status||'active')}</div><div><button class="btn light" onclick="packageModal('${esc(id)}')">EDIT</button> <button class="btn danger" onclick="deletePackage('${esc(id)}')">DELETE</button></div></div>`).join('')||'<div class="empty">কোনো package নেই</div>'}</div></div>`}
 function gatewaysPage(){const g=state.data.gateways||{};return`<div class="title"><h1>Gateway Settings</h1></div><div class="panel"><p class="hint">এই সেটিংস User Panel-এর gateways path-এ সংরক্ষিত হবে। WPAY Secret Key এখানে রাখা যাবে না।</p><div class="two">${['bkash','nagad','rocket'].map(k=>`<div><h3>${k.toUpperCase()}</h3><div class="field"><label>DISPLAY TITLE</label><input id="g_${k}_title" value="${esc(g[k]?.title||k)}"></div><div class="field"><label>DISPLAY NUMBER</label><input id="g_${k}_number" value="${esc(g[k]?.number||'')}"></div><div class="field"><label>BACKGROUND COLOR</label><input id="g_${k}_bg" value="${esc(g[k]?.bg||'#1565c0')}"></div></div>`).join('')}</div><button class="btn red" onclick="saveGateways()">SAVE GATEWAYS</button></div>`}
 function sitePage(){const s=state.data.site_settings||{},im=state.data.theme_images||{},sup=state.data.support_links||{};return`<div class="title"><h1>Site Settings</h1></div><div class="panel"><h3>Brand & Recharge Limits</h3><div class="two"><div class="field"><label>BRAND NAME</label><input id="brand" value="${esc(s.brand_name||'SPL')}"></div><div class="field"><label>PAYMENT DISPLAY NUMBER</label><input id="paynum" value="${esc(s.payment_number||'')}"></div><div class="field"><label>MIN RECHARGE</label><input id="minRecharge" type="number" value="${Number(s.recharge_min_amount||500)}"></div><div class="field"><label>MAX RECHARGE</label><input id="maxRecharge" type="number" value="${Number(s.recharge_max_amount||500000)}"></div></div><button class="btn red" onclick="saveSite()">SAVE SITE SETTINGS</button></div><div class="panel"><h3>Theme Images</h3><div class="two">${['login_banner','register_banner','slide1','slide2','slide3','slide4'].map(k=>`<div class="field"><label>${k.toUpperCase()} URL</label><input id="img_${k}" value="${esc(im[k]||'')}"></div>`).join('')}</div><h4>Home Banner Click Links</h4><div class="two">${['slide1','slide2','slide3','slide4'].map(k=>`<div class="field"><label>${k.toUpperCase()} CLICK URL</label><input id="link_${k}" value="${esc(im[k+'_link']||'')}" placeholder="https://..."></div>`).join('')}</div><button class="btn red" onclick="saveImages()">SAVE IMAGES & LINKS</button></div><div class="panel"><h3>Support Links</h3><div class="two">${['support','channel','group'].map(k=>`<div class="field"><label>${k.toUpperCase()} URL</label><input id="sup_${k}" value="${esc(sup[k]||'')}"></div>`).join('')}</div><div class="field"><label>APP DOWNLOAD LINK</label><input id="downloadLink" value="${esc(state.data.app_download_link||'')}"></div><button class="btn red" onclick="saveSupport()">SAVE LINKS</button></div><div class="panel"><h3>Notice Popup & Telegram Channel</h3><div class="field"><label>POPUP TITLE</label><input id="noticeTitle" value="${esc(s.notice_title||'জরুরী নোটিশ ও প্ল্যাটফর্ম নিয়মাবলী')}"></div><div class="field"><label>POPUP IMAGE URL</label><input id="noticeImage" value="${esc(s.notice_image_url||'')}" placeholder="https://..."></div><div class="field"><label>NOTICE TEXT (নিজের মতো লিখুন)</label><textarea id="noticeText" rows="7">${esc(s.notice_text||'')}</textarea></div><div class="field"><label>TELEGRAM CHANNEL URL</label><input id="telegramChannel" value="${esc(s.telegram_channel_url||'')}" placeholder="https://t.me/your_channel"></div><div class="field"><label>TELEGRAM BUTTON TEXT</label><input id="telegramLabel" value="${esc(s.telegram_channel_label||'টেলিগ্রাম চ্যানেলে যুক্ত হন')}"></div><div class="field"><label>HOME MARQUEE TEXT</label><input id="marqueeTextSetting" value="${esc(s.marquee_text||'')}"></div><button class="btn red" onclick="saveNoticeSettings()">SAVE NOTICE</button></div><div class="panel"><h3>Registration Bonus & Withdrawal Controls</h3><div class="three"><div class="field"><label>REGISTRATION BONUS (BDT)</label><input id="registrationBonus" type="number" min="0" step="1" value="${Number(s.registration_bonus??50)}"></div><div class="field"><label>MINIMUM WITHDRAWAL (BDT)</label><input id="minimumWithdrawal" type="number" min="1" step="1" value="${Number(s.minimum_withdrawal??150)}"></div><div class="field"><label>WITHDRAWAL FEE (%)</label><input id="withdrawalFeePercent" type="number" min="0" max="100" step="0.01" value="${Number(s.withdrawal_fee_percent??5)}"></div></div><button class="btn red" onclick="saveCoreMoneySettings()">SAVE BONUS & WITHDRAWAL SETTINGS</button><p class="hint">নতুন রেজিস্ট্রেশনে নির্ধারিত বোনাস প্রযোজ্য হবে। বিদ্যমান অ্যাকাউন্টে পরিবর্তন হবে না।</p></div><div class="panel"><h3>Withdrawal Schedule & Daily Limit</h3><div class="three"><div class="field"><label>WITHDRAWAL START (DHAKA TIME)</label><input id="withdrawStart" type="time" value="${esc(s.withdrawal_start_time||'10:00')}"></div><div class="field"><label>WITHDRAWAL END (DHAKA TIME)</label><input id="withdrawEnd" type="time" value="${esc(s.withdrawal_end_time||'17:00')}"></div><div class="field"><label>MAX REQUESTS PER USER / DAY</label><input id="withdrawDailyLimit" type="number" min="1" max="50" value="${Number(s.withdrawal_daily_limit||3)}"></div></div><button class="btn red" onclick="saveWithdrawalRules()">SAVE WITHDRAWAL RULES</button><p class="hint">সময় Asia/Dhaka অনুযায়ী গণনা হবে। পরিবর্তন সংরক্ষণের পর User Panel-এ স্বয়ংক্রিয়ভাবে কার্যকর হবে।</p></div><div class="panel"><h3>Referral Commission (Successful Deposit)</h3><div class="three">${[0,1,2].map((n)=>`<div class="field"><label>LEVEL ${n+1} COMMISSION (%)</label><input id="refRate${n+1}" type="number" min="0" max="100" step="0.01" value="${Number((s.referral_commission_rates||[10,2,1])[n]??[10,2,1][n])}"></div>`).join('')}</div><div class="field"><label>REFERRAL PROMO TEXT</label><input id="refPromo" value="${esc(s.referral_promo_text||'')}"></div><button class="btn red" onclick="saveReferralSettings()">SAVE REFERRAL SETTINGS</button><p class="hint">এই হার সফল ডিপোজিটের পরিমাণের ওপর গণনা করতে Backend callback-এ একই commission logic যুক্ত থাকা আবশ্যক। শুধু এখানে হার সেভ করলে পুরোনো package-purchase trigger স্বয়ংক্রিয়ভাবে deposit commission হয়ে যায় না।</p></div><div class="panel"><h3>Lucky Spin Prize Amounts</h3><div class="field"><label>PRIZES (COMMA SEPARATED, BDT)</label><input id="spinPrizes" value="${esc((s.spin_prizes||[20,50,120,347,800,254,90,1000]).join(','))}"></div><button class="btn red" onclick="saveSpinSettings()">SAVE SPIN PRIZES</button></div><div class="panel"><h3>Redeem / Gift Code Create</h3><div class="two"><div class="field"><label>CODE</label><input id="giftCode" placeholder="WELCOME10"></div><div class="field"><label>MAX USERS (0 = UNLIMITED)</label><input id="giftLimit" type="number" value="10"></div><div class="field"><label>MIN BONUS (৳)</label><input id="giftMin" type="number" value="10"></div><div class="field"><label>MAX BONUS (৳)</label><input id="giftMax" type="number" value="20"></div></div><button class="btn red" onclick="createGiftCode()">CREATE / UPDATE CODE</button><div class="table" style="margin-top:14px"><div class="tr head"><div>Code</div><div>Bonus Range</div><div>Claimed / Limit</div><div>Status</div><div>Action</div></div>${Object.entries(state.data.bonus_codes||{}).map(([code,c])=>`<div class="tr"><div><b>${esc(code)}</b></div><div>${money(c.min_amount??c.amount)} - ${money(c.max_amount??c.amount)}</div><div>${Number(c.claimed_count||0)} / ${Number(c.max_claims||0)||'∞'}</div><div>${esc(c.status||'active')}</div><div><button class="btn light" onclick="toggleGiftCode('${esc(code)}','${c.status==='inactive'?'active':'inactive'}')">${c.status==='inactive'?'ACTIVATE':'DISABLE'}</button></div></div>`).join('')||'<div class="empty">No gift codes</div>'}</div><p class="hint">প্রতি ইউজার একই কোড একবারই ব্যবহার করতে পারবে। সীমা ০ দিলে ব্যবহার সংখ্যা সীমাহীন।</p></div><div class="panel"><h3>Common User Texts</h3><div class="two"><div class="field"><label>WITHDRAWAL TITLE</label><input id="txt_lang_w_title" value="${esc((s.editable_texts||{}).lang_w_title||'উত্তোলন রিকোয়েস্ট')}"></div><div class="field"><label>WITHDRAWAL SCHEDULE TEXT</label><input id="txt_withdrawScheduleText" value="${esc((s.editable_texts||{}).withdrawScheduleText||'')}"></div><div class="field"><label>WITHDRAW CANCEL BUTTON</label><input id="txt_lang_w_cancel" value="${esc((s.editable_texts||{}).lang_w_cancel||'বাতিল')}"></div><div class="field"><label>WITHDRAW CONFIRM BUTTON</label><input id="txt_lang_w_confirm" value="${esc((s.editable_texts||{}).lang_w_confirm||'উত্তোলন করুন')}"></div><div class="field"><label>REGISTRATION TITLE</label><input id="txt_regTitleText" value="${esc((s.editable_texts||{}).regTitleText||'')}"></div><div class="field"><label>REGISTRATION BUTTON</label><input id="txt_regSubmitText" value="${esc((s.editable_texts||{}).regSubmitText||'নিবন্ধন সম্পন্ন করুন')}"></div><div class="field"><label>REGISTRATION LOGIN LINK</label><input id="txt_regLoginText" value="${esc((s.editable_texts||{}).regLoginText||'ইতিমধ্যে অ্যাকাউন্ট আছে? লগইন করুন')}"></div><div class="field"><label>REGISTRATION NAME PLACEHOLDER</label><input id="txt_regNamePlaceholder" value="${esc((s.editable_texts||{}).regNamePlaceholder||'সম্পূর্ণ নাম')}"></div><div class="field"><label>REGISTRATION PHONE PLACEHOLDER</label><input id="txt_regPhonePlaceholder" value="${esc((s.editable_texts||{}).regPhonePlaceholder||'মোবাইল নম্বর')}"></div><div class="field"><label>REGISTRATION PASSWORD PLACEHOLDER</label><input id="txt_regPasswordPlaceholder" value="${esc((s.editable_texts||{}).regPasswordPlaceholder||'পাসওয়ার্ড সেট করুন')}"></div><div class="field"><label>REGISTRATION INVITE PLACEHOLDER</label><input id="txt_regInvitePlaceholder" value="${esc((s.editable_texts||{}).regInvitePlaceholder||'আমন্ত্রণ কোড')}"></div><div class="field"><label>WITHDRAW AMOUNT PLACEHOLDER</label><input id="txt_withdrawInputPlaceholder" value="${esc((s.editable_texts||{}).withdrawInputPlaceholder||'উত্তোলনের পরিমাণ')}"></div></div><button class="btn red" onclick="saveCommonTexts()">SAVE COMMON TEXTS</button></div><div class="panel"><h3>User Panel Text Overrides</h3><div class="field"><label>TEXT MAP (JSON: element ID → text)</label><textarea id="editableTextsJson" rows="8" placeholder='{"marqueeText":"আপনার লেখা","referralPromoText":"নতুন লেখা"}'>${esc(JSON.stringify(s.editable_texts||{},null,2))}</textarea></div><button class="btn red" onclick="saveEditableTexts()">SAVE TEXT OVERRIDES</button></div><div class="panel"><h3>Page Theme Colors</h3><div class="three">${[['primaryRed','Primary / Button'],['bgMain','Page Background'],['bgCard','Card Background'],['textDark','Main Text'],['textMuted','Muted Text'],['borderColor','Border'],['sweetPeach','Accent Background']].map(([k,l])=>`<div class="field"><label>${l}</label><input id="color_${k}" type="color" value="${esc((s.page_colors||{})[k]||({'primaryRed':'#1565c0','bgMain':'#f7f8fa','bgCard':'#ffffff','textDark':'#111111','textMuted':'#777777','borderColor':'#e5e7eb','sweetPeach':'#eaf2ff'}[k]))}"></div>`).join('')}</div><button class="btn red" onclick="savePageColors()">SAVE COLORS</button></div>`}
@@ -109,72 +196,26 @@ async function creditReferralCommissionForDeposit(sourcePhone, sourceId, amount)
 
 function manualDepositModal(){ const users=Object.entries(state.data.users||{}); modal(`<div class="modalHead"><h2>Manual Deposit — Instant Approve</h2><button class="close" onclick="closeModal()">×</button></div> <div class="field"><label>USER PHONE</label><select id="manualDepPhone">${users.map(([p,u])=>`<option value="${esc(p)}">${esc(p)} — ${esc(u.name||'User')}</option>`).join('')}</select></div> <div class="two"><div class="field"><label>AMOUNT (BDT)</label><input id="manualDepAmount" type="number" min="1" step="0.01"></div> <div class="field"><label>METHOD</label><select id="manualDepMethod"><option value="bkash">bKash</option><option value="nagad">Nagad</option><option value="rocket">Rocket</option><option value="manual">Manual</option></select></div></div> <div class="field"><label>TRANSACTION ID (OPTIONAL — NOT REQUIRED)</label><input id="manualDepTrx" placeholder="Optional"></div> <div class="field"><label>NOTE (OPTIONAL)</label><input id="manualDepNote" placeholder="Admin note"></div> <button class="btn red full" onclick="saveManualDeposit()">ADD & APPROVE NOW</button>`);}async function saveManualDeposit(){ const phone=$('manualDepPhone').value, amount=Number($('manualDepAmount').value), method=$('manualDepMethod').value, trx=$('manualDepTrx').value.trim(), note=$('manualDepNote').value.trim(); if(!phone||!Number.isFinite(amount)||amount<=0)return alert('সঠিক User ও Amount দিন'); try{  const userRef=ref(db,`users/${phone}`);  const id=push(ref(db,`users/${phone}/deposits`)).key;  const tx=await runTransaction(userRef,u=>{   if(!u)return;   u.balance=Number(u.balance||0)+amount;   u.deposits=u.deposits||{};   u.depositCredits=u.depositCredits||{};   u.deposits[id]={amount,method,status:'সফল',trxId:trx||`MANUAL-${id}`,out_trade_no:id,manual:true,adminApproved:true,adminUid:state.user.uid,note,createdAt:now(),creditedAt:now(),date:new Date().toLocaleDateString('bn-BD')};   u.depositCredits[id]={amount,manual:true,adminUid:state.user.uid,creditedAt:now()};   return u;  });  if(!tx.committed)return alert('User পাওয়া যায়নি');  await creditReferralCommissionForDeposit(phone,id,amount);  closeModal();await refresh();alert('Manual deposit সাথে সাথে Approved হয়েছে — কোনো আলাদা verification permission লাগবে না'); }catch(e){alert(msg(e))}}
 async function reviewDeposit(phone,id,decision){const d=state.data.users?.[phone]?.deposits?.[id];if(!d)return;if(isSuccess(d.status)||isFailed(d.status))return alert('এই ডিপোজিট আগে process করা হয়েছে');let verificationRef='';if(decision==='approved'){verificationRef=prompt('পেমেন্ট যাচাইয়ের Transaction ID / ব্যাংক রেফারেন্স লিখুন (নিজে যাচাই না করে Approve করবেন না):','')||'';if(!verificationRef.trim())return alert('যাচাইয়ের রেফারেন্স ছাড়া Approve করা যাবে না');if(!confirm(`${money(d.amount)} টাকা বাস্তবে পেয়েছেন এবং রেফারেন্স ${verificationRef} যাচাই করেছেন?`))return;}else if(!confirm('এই ডিপোজিট Reject করবেন?'))return;try{const amount=Number(d.amount||0);if(!Number.isFinite(amount)||amount<=0)throw Error('Invalid deposit amount');const userRef=ref(db,`users/${phone}`);const tx=await runTransaction(userRef,u=>{if(!u||!u.deposits||!u.deposits[id]||isSuccess(u.deposits[id].status)||isFailed(u.deposits[id].status))return;u.depositCredits=u.depositCredits||{};const dep=u.deposits[id];if(decision==='approved'){if(!u.depositCredits[id]){u.balance=Number(u.balance||0)+amount;u.depositCredits[id]={amount,manual:true,verificationRef:verificationRef.trim(),creditedAt:now()};}dep.status='সফল';dep.adminReviewed=true;dep.verificationRef=verificationRef.trim();dep.creditedAt=now();}else{dep.status='বাতিল';dep.adminReviewed=true;}dep.reviewedAt=now();dep.reviewedBy=state.user.uid;u.deposits[id]=dep;return u;});if(!tx.committed)return alert('এই ডিপোজিট আগে process হয়েছে অথবা ইউজার পাওয়া যায়নি');if(decision==='approved'){await creditReferralCommissionForDeposit(phone,id,amount);}await refresh();alert(decision==='approved'?'যাচাইকৃত ডিপোজিট Approve হয়েছে':'ডিপোজিট Reject হয়েছে')}catch(e){alert(msg(e))}}
-async function reviewWithdrawal(id,status){
+async async function reviewWithdrawal(id,status){
  const w=state.data.withdrawal_requests[id];
  if(!w)return;
  if(isProcessed(w.status))return alert('এই request আগে process করা হয়েছে');
- const phone=String(w.userPhone||''),amount=Number(w.amount||0);
- if(!/^01[3-9]\d{8}$/.test(phone)||!Number.isFinite(amount)||amount<=0)return alert('Withdrawal record-এ সঠিক userPhone/amount নেই');
- if(status==='approved'&&!confirm(`ইউজারকে ${money(w.netAmount??amount)} টাকা বাইরে থেকে পাঠিয়েছেন? পাঠানো হয়ে থাকলেই Approve করুন। Approve করলে ওয়ালেট থেকে ${money(amount)} টাকা কাটা হবে।`))return;
  if(status==='rejected'&&!confirm('এই উত্তোলন আবেদন Reject করবেন?'))return;
+ if(status==='approved'&&!confirm('এটি শুধু Admin-complete হিসেবে চিহ্নিত হবে। কোনো bKash/Nagad/Rocket টাকা পাঠানো হবে না এবং wallet balance কাটবে না। Continue?'))return;
  try{
-  const requestRef=ref(db,`withdrawal_requests/${id}`);
-  const claim=await runTransaction(requestRef,current=>{
-   if(!current)return;
-   const st=String(current.status||'').toLowerCase();
-   if(['টাকা পাঠানো হয়েছে','বাতিল','approved','rejected','completed','paid','সফল','সম্পন্ন','অনুমোদিত'].includes(st))return;
-   if(st==='processing' && current.processingBy!==state.user.uid)return;
-   return {...current,status:'processing',processingBy:state.user.uid,processingAt:now()};
+  const phone=String(w.userPhone||'');
+  if(!/^01[3-9]\d{8}$/.test(phone))return alert('Withdrawal record-এ সঠিক userPhone নেই');
+  const statusText=status==='approved'?'সম্পন্ন (Admin)':'বাতিল';
+  const updated={...w,status:statusText,reviewedAt:now(),reviewedBy:state.user.uid,
+    adminCompletionOnly:status==='approved',payoutSent:false,balanceDebited:false};
+  await update(ref(db),{
+    [`withdrawal_requests/${id}`]:updated,
+    [`users/${phone}/withdrawals/${id}`]:updated
   });
-  if(!claim.committed)return alert('এই আবেদন অন্য Admin process করছেন অথবা আগেই সম্পন্ন হয়েছে.');
-
-  if(status==='approved'){
-   const tx=await runTransaction(ref(db,`users/${phone}`),u=>{
-    if(!u||!u.withdrawals||!u.withdrawals[id])return;
-    u.withdrawalDebits=u.withdrawalDebits||{};
-    if(!u.withdrawalDebits[id]){
-     const bal=Number(u.balance||0);
-     if(bal<amount)return;
-     u.balance=bal-amount;
-     u.withdrawalDebits[id]={amount,debitedAt:now(),adminUid:state.user.uid};
-    }
-    u.withdrawals[id]={
-      ...u.withdrawals[id],
-      status:'সফল',
-      paidAt:now(),
-      reviewedAt:now(),
-      reviewedBy:state.user.uid
-    };
-    return u;
-   });
-   if(!tx.committed){
-    await update(requestRef,{status:'পেন্ডিং',processingBy:null,processingAt:null});
-    return alert('ব্যালেন্স অপর্যাপ্ত বা ইউজারের withdrawal record পাওয়া যায়নি।');
-   }
-   const updatedUser=tx.snapshot.val()||{};
-   const updatedWithdrawal=updatedUser.withdrawals?.[id]||{...w,status:'সফল'};
-   await update(requestRef,{
-     ...claim.snapshot.val(),
-     ...updatedWithdrawal,
-     id,
-     status:'সফল',
-     reviewedAt:updatedWithdrawal.reviewedAt||now(),
-     reviewedBy:state.user.uid,
-     paidAt:updatedWithdrawal.paidAt||now(),
-     paidAmount:Number(w.netAmount??amount),
-     processingBy:null,
-     processingAt:null
-   });
-   await update(ref(db,`users/${phone}/withdrawals/${id}`),updatedWithdrawal);
-  } else {
-   const rejected={...w,status:'বাতিল',reviewedAt:now(),reviewedBy:state.user.uid};
-   await update(ref(db),{
-     [`withdrawal_requests/${id}`]:{...claim.snapshot.val(),...rejected,processingBy:null,processingAt:null},
-     [`users/${phone}/withdrawals/${id}`]:rejected
-   });
-  }
   await refresh();
-  alert(status==='approved'?'উত্তোলন সফল হিসেবে চিহ্নিত হয়েছে':'উত্তোলন আবেদন বাতিল হয়েছে');
+  alert(status==='approved'
+    ? 'Request Admin-complete হিসেবে চিহ্নিত হয়েছে। কোনো payout বা wallet debit করা হয়নি।'
+    : 'উত্তোলন আবেদন বাতিল হয়েছে');
  }catch(e){console.error(e);alert(msg(e));}
 }
 function packageModal(id=''){const p=state.data.packages?.[id]||{};modal(`<div class="modalHead"><h2>${id?'Edit':'Add'} Package</h2><button class="close" onclick="closeModal()">×</button></div><div class="two"><div class="field"><label>PACKAGE ID</label><input id="pId" value="${esc(id)}" ${id?'readonly':''}></div><div class="field"><label>NAME</label><input id="pName" value="${esc(p.name||'')}"></div><div class="field"><label>COST</label><input id="pCost" type="number" value="${Number(p.cost||0)}"></div><div class="field"><label>DAILY INCOME</label><input id="pDaily" type="number" value="${Number(p.daily||0)}"></div><div class="field"><label>DURATION DAYS</label><input id="pDuration" type="number" value="${Number(p.duration||0)}"></div><div class="field"><label>BUY LIMIT</label><input id="pLimit" type="number" value="${Number(p.limit||1)}"></div><div class="field"><label>IMAGE URL</label><input id="pImg" value="${esc(p.img||'')}"></div><div class="field"><label>STATUS</label><select id="pStatus"><option value="active" ${p.status==='active'?'selected':''}>active</option><option value="soon" ${p.status==='soon'?'selected':''}>soon</option><option value="hidden" ${p.status==='hidden'?'selected':''}>hidden</option></select></div></div><button class="btn red full" onclick="savePackage('${esc(id)}')">SAVE PACKAGE</button>`)}
