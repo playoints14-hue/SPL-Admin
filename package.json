@@ -1,8 +1,0 @@
-{
-  "name": "spl-admin-backend",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": { "start": "node server.js" },
-  "dependencies": { "express": "^4.21.2", "firebase-admin": "^13.0.0", "jose": "^5.9.6" }
-}
