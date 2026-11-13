@@ -1,9 +1,0 @@
-{
-  "name": "spl-admin",
-  "version": "1.0.1",
-  "private": true,
-  "description": "SPL Admin Panel hosted on Render",
-  "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "engines": { "node": ">=18" }
-}
